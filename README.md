@@ -1,33 +1,34 @@
-# NL2Bash
+# NL2Bash (Enhanced Fork for Purple Teaming)
+
+**Note:** This repository is a fork of the original [NL2Bash project](https://github.com/TellinaTool/nl2bash). This version is being enhanced and adapted with a focus on purple team cybersecurity applications and security best practices.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Overview
 
-This repository contains the data and source code release of the paper: [NL2Bash: A Corpus and Semantic Parser for
-Natural Language Interface to the Linux Operating System](http://victorialin.net/pubs/nl2bash.pdf).
+This repository contains the data and source code originally released with the paper: [NL2Bash: A Corpus and Semantic Parser for Natural Language Interface to the Linux Operating System](http://victorialin.net/pubs/nl2bash.pdf).
 
-Specifically, it contains the following components:
+This fork aims to enhance and adapt the original NL2Bash project, tailoring its capabilities for purple team cybersecurity exercises, analysis, and improving overall security posture. It builds upon the original components:
 
-1. A set of ~10,000 bash one-liners collected from websites such as StackOverflow paired with their English descriptions written by Bash programmers.
-2. Tensorflow implementations of the following translation models:
-   - the standard [Seq2Seq](https://arxiv.org/abs/1409.0473) and [CopyNet](https://arxiv.org/abs/1603.06393) models
-   - a stage-wise NL⟶Bash model using argument filling heuristics (Lin et. al. 2017).
-3. A Bash command parser which parses a Bash command into an abstractive syntax tree, developed on top of  [bashlex](https://github.com/idank/bashlex).
-4. A set of domain-specific natural language processing tools, including a regex-based sentence tokenizer and a domain specific named entity recognizer.
+1.  A set of ~10,000 bash one-liners collected from websites such as StackOverflow paired with their English descriptions written by Bash programmers. (This dataset forms the foundation for understanding command structures relevant to security analysis).
+2.  Tensorflow implementations of the following translation models:
+    * the standard [Seq2Seq](https://arxiv.org/abs/1409.0473) and [CopyNet](https://arxiv.org/abs/1603.06393) models
+    * a stage-wise NL⟶Bash model using argument filling heuristics (Lin et. al. 2017).
+    (Enhancements may focus on adapting these models for security-specific commands and natural language queries.)
+3.  A Bash command parser which parses a Bash command into an abstractive syntax tree, developed on top of [bashlex](https://github.com/idank/bashlex). (Potentially improved for parsing complex or obfuscated commands seen in security contexts).
+4.  A set of domain-specific natural language processing tools, including a regex-based sentence tokenizer and a domain specific named entity recognizer. (Adaptations may include recognizing security-related entities like IOCs, TTPs, etc.).
 
-You may visit  http://tellina.rocks to interact with our pretrained model.
+You may visit http://tellina.rocks to interact with the *original* pretrained model. Work may be undertaken in this fork to host models trained with the specific enhancements developed here.
 
-**🆕  Apr 24, 2020** The dataset `data/bash` is separately licensed under MIT license.
+**🆕 Apr 24, 2020 (Original Project Update)** The dataset `data/bash` from the original project is separately licensed under the MIT license. Please review the licensing terms for any components used or modified in this fork.
 
+## Data Statistics (Original Corpus)
 
-## Data Statistics
+The original corpus contains a diverse set of Bash utilities and flags: 102 unique utilities, 206 unique flags and 15 reserved tokens. (Browse the raw data collection [here](https://github.com/TellinaTool/nl2bash/tree/master/data/bash).)
 
-Our corpus contains a diverse set of Bash utilities and flags: 102 unique utilities, 206 unique flags and 15 reserved tokens. (Browse the raw data collection [here](https://github.com/TellinaTool/nl2bash/tree/master/data/bash).)
+In the original experiments, the set of ~10,000 NL-bash command pairs were splitted into train, dev and test sets such that *neither a natural language description nor a Bash command appears in more than one split*.
 
-In our experiments, the set of ~10,000 NL-bash command pairs are splitted into train, dev and test sets such that *neither a natural language description nor a Bash command appears in more than one split*.
-
-The statistics of the data split is tabulated below. (A command template is defined as a Bash command with all of its arguments replaced by their semantic types.)
+The statistics of the original data split is tabulated below. (A command template is defined as a Bash command with all of its arguments replaced by their semantic types.)
 
 <table>
    <tr>
@@ -62,17 +63,19 @@ The statistics of the data split is tabulated below. (A command template is defi
    </tr>
 </table>
 
-The frequency of the top 50 most frequent Bash utilities in the corpus is illustrated in the following diagram.
+The frequency of the top 50 most frequent Bash utilities in the original corpus is illustrated in the following diagram.
 
 <p align="left">
-  <img src="http://victorialin.net/img/github/nl2bash-utility-dist2.png" width="320" title="NL2Bash utility distribution">
+  <img src="http://victorialin.net/img/github/nl2bash-utility-dist2.png" width="320" title="NL2Bash utility distribution (Original Corpus)">
 </p>
 
-## Leaderboard
+## Leaderboard (Based on Original Paper)
 
-### Manually Evaluated Translation Accuracy
+These results reflect the performance reported in the original NL2Bash paper. Enhancements in this fork will aim to improve upon these, potentially with new metrics relevant to security applications.
 
-Top-k full command accuracy and top-k command template accuracy judged by human experts. Please refer to section 4 of the paper for the exact procedures we took to run manual evaluation.  
+### Manually Evaluated Translation Accuracy (Original)
+
+Top-k full command accuracy and top-k command template accuracy judged by human experts. Please refer to section 4 of the original paper for the exact procedures taken for manual evaluation.
 
 <table>
    <tr>
@@ -83,7 +86,7 @@ Top-k full command accuracy and top-k command template accuracy judged by human 
       <td>T-Acc-Top3</td>
    </tr>
    <tr>
-      <td>Sub-token CopyNet (this work)</td>
+      <td>Sub-token CopyNet (Original Work)</td>
       <td><strong>0.36</strong></td>
       <td><strong>0.45</strong></td>
       <td>0.49</td>
@@ -98,11 +101,11 @@ Top-k full command accuracy and top-k command template accuracy judged by human 
    </tr>
 </table>
 
-⚠️ If you plan to run manual evaluation yourself, please refer to ["Notes on Manual Evaluation"](#notes-on-manual-evaluation) for issues you should pay attention to.
+⚠️ If you plan to run manual evaluation yourself, please refer to ["Notes on Manual Evaluation"](#notes-on-manual-evaluation) for issues you should pay attention to, adapting as necessary for security-focused evaluations.
 
-### Automatic Evaluation Metrics
+### Automatic Evaluation Metrics (Original)
 
-In addition, we also report [*character-based* BLEU](https://github.com/TellinaTool/nl2bash/blob/master/eval/eval_tools.py#L343) and a self-defined template matching score as the automatic evaluation metrics used to approximate the true translation accuracy. Please refer to appendix C of the paper for the metrics definitions.
+The original paper also reported [*character-based* BLEU](https://github.com/TellinaTool/nl2bash/blob/master/eval/eval_tools.py#L343) and a self-defined template matching score. Please refer to appendix C of the original paper for the metrics definitions.
 
 <table>
    <tr>
@@ -113,7 +116,7 @@ In addition, we also report [*character-based* BLEU](https://github.com/TellinaT
       <td>TM-Top3</td>
    </tr>
    <tr>
-      <td>Sub-token CopyNet (this work)</td>
+      <td>Sub-token CopyNet (Original Work)</td>
       <td><strong>50.9</strong></td>
       <td><strong>58.2</strong></td>
       <td>0.574</td>
@@ -128,121 +131,95 @@ In addition, we also report [*character-based* BLEU](https://github.com/TellinaT
    </tr>
 </table>
 
-## Run Experiments
+## Run Experiments (Getting Started with Original Setup)
 
-### Install TensorFlow
+### Install TensorFlow (Check Requirements)
 
-To reproduce our experiments, please install TensorFlow 2.0. The experiments can be reproduced on machines with or without GPUs. However, training with CPU only is extremely slow and we do not recommend it. Inference with CPU only is slow but tolerable.
+To reproduce the original experiments, TensorFlow 2.0 was required. Check the current requirements for this fork if modifications have been made. The original experiments could run on CPU or GPU, but training was significantly faster with GPU.
 
-We suggest following the [official instructions](https://www.tensorflow.org/install/) to install the library. The code has been tested on Ubuntu 16.04 + CUDA 10.0 + CUDNN 7.6.3.
+Follow the [official TensorFlow instructions](https://www.tensorflow.org/install/) for installation, ensuring compatibility with your system (e.g., CUDA/CUDNN versions if using GPU). The original code was tested on Ubuntu 16.04 + CUDA 10.0 + CUDNN 7.6.3.
 
 ### Environment Variables & Dependencies
 
-Once TensorFlow is installed, use the following commands to set up the Python path and main experiment dependencies.
+Set up the Python path and install dependencies based on the original project (adapt if this fork has different requirements).
+```bash
+# Ensure PYTHONPATH includes the project root
+export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
-export PYTHONPATH=`pwd`
-
+# Install dependencies (original method)
+# Review the Makefile and requirements for this fork
 (sudo) make
-```
 
-### Change Directory
-
-Then enter the [scripts](/scripts) directory.
-```
+Change Directory
+Navigate to the scripts directory (or as specified by this fork's structure).
+```bash
 cd scripts
 ```
-### Data filtering, split and pre-processing
-
-Run the following command. This will clean the raw NL2Bash corpus and apply filtering, create the train/dev/test splits and preprocess the data into the formats taken by the Tensorflow models. 
-
-```
+Data filtering, split and pre-processing (Original Workflow)
+This command runs the original data preparation pipeline. Modifications in this fork might require different steps.
 make data
-```
-To change the data-processing workflow, go to [data](/data) and modify the utility scripts.
 
-### Train models
-```
+To change the data-processing workflow, examine the scripts in the data directory (or relevant location in this fork) and modify the utility scripts as needed.
+Train models (Original Workflow)
+```bash
 make train
 ```
-
-### Evaluate models
-We provide evaluation scripts to evaluate the performance of any new model. 
-
-To do so please save your model output to a file ([example](https://github.com/TellinaTool/nl2bash/blob/master/model/seq2seq/bash--partial-4-birnn-gru-standard-attention-0.6-0.6-0.0-copy-1.0-128-200-1-0.0001-1e-08-0.6-0.6-0.6-0.6/predictions.beam_search.100.dev.latest)). We assume the file is of the following format:
-```
-1. The i-th line of the file contains predictions for example i in the dataset.
+Evaluate models (Original Workflow)
+The original project provided evaluation scripts. Adapt these or use new ones developed for this fork's goals.
+To use the original evaluation scripts, save your model output to a file (example). The expected format was:
+1. The i-th line contains predictions for example i in the dataset.
 2. Each line contains top-k predictions separated by "|||".
-```
 
-Then get the evaluation results using the following script
-#### Manual
+Then use the bash-run.sh script (adjust paths and flags as needed):
+Manual (Original Method)
 
 Dev set evaluation
-```
+```bash
 ./bash-run.sh --data bash --prediction_file <path_to_your_model_output_file> --manual_eval
 ```
-
 Test set evaluation
-```
+```bash
 ./bash-run.sh --data bash --prediction_file <path_to_your_model_output_file> --manual_eval --test
 ```
-
-#### Automatic
-
+Automatic (Original Method)
 Dev set evaluation
-```
 ./bash-run.sh --data bash --prediction_file <path_to_your_model_output_file> --eval
-```
 
 Test set evaluation
-```
 ./bash-run.sh --data bash --prediction_file <path_to_your_model_output_file> --eval --test
-```
 
-### Generate evaluation table using pre-trained models
-
-Decode the pre-trained models and print the evaluation summary table.
-```
+Generate evaluation table using pre-trained models (Original Method)
+Decode the original pre-trained models and print the evaluation summary table.
 make decode
-```
 
-Skip the decoding step and print the evaluation summary table from the predictions saved on disk.
-```
+Skip decoding and print the table from existing prediction files.
 make gen_manual_evaluation_table
-```
 
-By default, the decoding and evaluation steps will print sanity checking messages. You may set `verbose` to `False` in the following source files to suppress those messages.
-```
-encoder_decoder/decode_tools.py
-eval/eval_tools.py
-```
-
-### Notes on Manual Evaluation
-
-In our experiment, we conduct manual evaluation as the correctness of a Bash translation cannot simply be determined by mapping it to a set of ground truth.
-We suggest the following practices for future work to generate comparable results and to accelerate the development cycle.
-1. If you plan to run your own manual evaluation, please annotate the output of both your system(s) and the baseline systems you compared to. This is to ensure that the newly proposed system(s) and the baselines are judged by the same group of annotators.
-2. If you run manual evaluation, please release [the examples annotated with their annotations](https://github.com/TellinaTool/nl2bash/tree/master/data/bash/manual_judgements). This helps others to replicate the results and reuse these annotations.
-3. During model development you could annotate a small subset of the dev examples (50-100 is likely enough) to estimate the true dev set accuracy. We released a script which saves any previous annotations and opens a commandline interface for judging any unseen predictions ([manual_eval.md](https://github.com/TellinaTool/nl2bash/blob/master/manual_eval.md)).
-
-The motivation for the practices above is detailed in issue [#6](https://github.com/TellinaTool/nl2bash/issues/6).
-
-## Citation
-
-If you use the data or source code in your work, please cite
-```
-@inproceedings{LinWZE2018:NL2Bash, 
-  author = {Xi Victoria Lin and Chenglong Wang and Luke Zettlemoyer and Michael D. Ernst}, 
-  title = {NL2Bash: A Corpus and Semantic Parser for Natural Language Interface to the Linux Operating System}, 
+The original decoding/evaluation steps had verbose output. You could set verbose to False in encoder_decoder/decode_tools.py and eval/eval_tools.py to suppress messages (check if these files/settings exist or have changed in this fork).
+Notes on Manual Evaluation
+Conducting manual evaluation is crucial as simple string matching often fails to capture the correctness of Bash commands, especially in security contexts where intent and effect matter. The original project suggested:
+ * Evaluate outputs from both your system(s) and baselines using the same annotators for fair comparison.
+ * Release annotated examples (original example) to aid reproducibility and reuse. Consider formats suitable for security findings.
+ * During development, annotate a smaller subset (e.g., 50-100 dev examples) to estimate performance. The original project provided a script (manual_eval.md) for this – adapt or create tools suitable for purple team analysis.
+See original issue #6 for more motivation.
+Citation (Original Work)
+If you use the original data or source code foundational to this fork, please cite the original paper:
+@inproceedings{LinWZE2018:NL2Bash,
+  author = {Xi Victoria Lin and Chenglong Wang and Luke Zettlemoyer and Michael D. Ernst},
+  title = {NL2Bash: A Corpus and Semantic Parser for Natural Language Interface to the Linux Operating System},
   booktitle = {Proceedings of the Eleventh International Conference on Language Resources
                and Evaluation {LREC} 2018, Miyazaki (Japan), 7-12 May, 2018.},
-  year = {2018} 
+  year = {2018}
 }
-```
 
-Related paper: [Lin et. al. 2017. Program Synthesis from Natural Language Using Recurrent Neural Networks](http://victorialin.net/pubs/tellina_tr170510.pdf). 
+Related paper: Lin et. al. 2017. Program Synthesis from Natural Language Using Recurrent Neural Networks.
+Please also consider citing this fork if you use the specific enhancements or modifications developed here (provide citation details specific to this fork).
+Changelog (Original Project)
+ * Apr 24, 2020 The dataset data/bash is separately licensed under the terms of the MIT license.
+ * Oct 20, 2019 release standard evaluation scripts
+ * Oct 20, 2019 update to Tensorflow 2.0
+(Add a Changelog for this Fork below to track enhancements)
+Changelog (This Fork)
+ * [Date] - Initial fork created. Focus defined: Purple Team enhancements, security best practices.
+ * (Add further changes here)
 
-## Changelog  
-* **Apr 24, 2020** The dataset `data/bash` is separately licensed under the terms of the MIT license.
-* **Oct 20, 2019** release standard evaluation scripts
-* **Oct 20, 2019** update to Tensorflow 2.0
