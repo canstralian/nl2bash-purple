@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Python with pip cache
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: pip                                            # caches pip dependencies for speed  [oai_citation_attribution:0‡GitHub Docs](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-python?utm_source=chatgpt.com)
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Run pytest and generate JUnit XML results
+      - name: Run tests
+        run: pytest --maxfail=1 --disable-warnings -q \
+                     --junitxml=pytest-results.xml            # outputs test results for artifact upload  [oai_citation_attribution:1‡GitHub Docs](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-python?utm_source=chatgpt.com)
+
+      # 5. Upload test results regardless of outcome
+      - name: Upload pytest results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-results
+          path: pytest-results.xml
+
+      # 6. Build Docker image
+      - name: Build Docker image
+        run: docker build . --tag nl2bash-purple:${{ github.sha }}  # docker readily available on ubuntu-latest runners  [oai_citation_attribution:2‡Stack Overflow](https://stackoverflow.com/questions/67134410/how-to-test-my-dockerfile-for-my-python-project-using-github-actions?utm_source=chatgpt.com)
